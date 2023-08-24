@@ -5,7 +5,7 @@ const pictureFragment = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const renderPictureMiniature = () => {
+const renderThumbnail = () => {
   const photos = createPhotos();
 
   photos.forEach((photo) => {
@@ -17,4 +17,4 @@ const renderPictureMiniature = () => {
   });
 };
 
-renderPictureMiniature();
+renderThumbnail();
