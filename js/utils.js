@@ -1,4 +1,5 @@
 // Проверка строки на максимальную длину
+// eslint-disable-next-line no-unused-vars
 function checkStringLength (string, maxLength) {
   return string.length <= maxLength;
 }
@@ -12,8 +13,23 @@ function getRandomPositiveInteger (a, b) {
   return Math.floor(result);
 }
 
-const getRandomArray = (arr) => {
-  return arr[getRandomPositiveInteger(1, arr.length - 1)];
+function createRandomIdFromRangeGenerator (min, max) {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomPositiveInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      console.error(`Перебраны все числа из диапазона от ${  min  } до ${  max}`);
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomPositiveInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
 }
 
-export {getRandomArray, getRandomPositiveInteger};
+const getRandomArray = (arr) => arr[getRandomPositiveInteger(1, arr.length - 1)];
+
+export {getRandomArray, getRandomPositiveInteger, createRandomIdFromRangeGenerator};

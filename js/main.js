@@ -1,4 +1,6 @@
 import {createPhotos} from './data.js';
 import './utils.js';
+import './renderPhotos.js';
 
-console.log(createPhotos())
+// eslint-disable-next-line no-console
+console.log(createPhotos());
