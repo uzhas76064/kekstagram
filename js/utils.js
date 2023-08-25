@@ -1,35 +1,26 @@
-// Проверка строки на максимальную длину
-// eslint-disable-next-line no-unused-vars
-function checkStringLength (string, maxLength) {
-  return string.length <= maxLength;
-}
-
-// Генерация рандомного целого числа в диапозоне от a до b
-function getRandomPositiveInteger (a, b) {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-}
-
-function createRandomIdFromRangeGenerator (min, max) {
-  const previousValues = [];
-
-  return function () {
-    let currentValue = getRandomPositiveInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      console.error(`Перебраны все числа из диапазона от ${  min  } до ${  max}`);
-      return null;
+function getRandomPositiveInteger(min = 0, max = 0) {
+  if((min < 0) || (max < 0)) {
+    return;
+  }
+  if(min > max) {
+    const temp = min;
+    min = max;
+    max = temp;
+  }
+  if(!min && !max) {
+    return Math.floor(Math.random()*1000000);
+  }
+  if(!min || !max) {
+    if(min) {
+      return Math.floor(Math.random() * min);
     }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomPositiveInteger(min, max);
+    if(max) {
+      return Math.floor(Math.random() * max);
     }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
+  }
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const getRandomArray = (arr) => arr[getRandomPositiveInteger(1, arr.length - 1)];
+const getRandomArrayElement = (elements) => (elements[getRandomPositiveInteger(0,elements.length - 1)]);
 
-export {getRandomArray, getRandomPositiveInteger, createRandomIdFromRangeGenerator};
+export {getRandomArrayElement, getRandomPositiveInteger};
