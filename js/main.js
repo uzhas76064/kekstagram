@@ -1,7 +1,4 @@
-import {createPhotos} from './data.js';
-import './utils.js';
-import './renderThumbnails.js';
-import './renderFullScreenPhoto.js';
+import { getPictures } from './data.js';
+import { renderPictures } from './renderThumbnails.js';
 
-// eslint-disable-next-line no-console
-console.log(createPhotos());
+renderPictures(getPictures());

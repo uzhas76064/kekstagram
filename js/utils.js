@@ -1,26 +1,13 @@
-function getRandomPositiveInteger(min = 0, max = 0) {
-  if((min < 0) || (max < 0)) {
-    return;
-  }
-  if(min > max) {
-    const temp = min;
-    min = max;
-    max = temp;
-  }
-  if(!min && !max) {
-    return Math.floor(Math.random()*1000000);
-  }
-  if(!min || !max) {
-    if(min) {
-      return Math.floor(Math.random() * min);
-    }
-    if(max) {
-      return Math.floor(Math.random() * max);
-    }
-  }
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const getRandomPositiveInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
 
-const getRandomArrayElement = (elements) => (elements[getRandomPositiveInteger(0,elements.length - 1)]);
+const checkStringLength = (string, length) => string.length <= length;
 
-export {getRandomArrayElement, getRandomPositiveInteger};
+const getRandomArrayElement = (array) =>
+  array[getRandomPositiveInteger(0, array.length - 1)];
+
+export { getRandomPositiveInteger, checkStringLength, getRandomArrayElement };
