@@ -5,9 +5,17 @@ const getRandomPositiveInteger = (a, b) => {
   return Math.floor(result);
 };
 
+const isEscPressed = (evt) => {
+  return evt.key === 'Escape';
+};
+
 const checkStringLength = (string, length) => string.length <= length;
 
 const getRandomArrayElement = (array) =>
   array[getRandomPositiveInteger(0, array.length - 1)];
 
-export { getRandomPositiveInteger, checkStringLength, getRandomArrayElement };
+const isNegative = (value) => {
+  return value < 0;
+};
+
+export { getRandomPositiveInteger, checkStringLength, getRandomArrayElement, isNegative, isEscPressed };

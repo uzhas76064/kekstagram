@@ -30,7 +30,7 @@ const renderComments = (comments) => {
   commentList.append(fragment);
 };
 
-const hideBigPicture = () => {
+const closeModal = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
@@ -39,12 +39,12 @@ const hideBigPicture = () => {
 function onEscKeyDown(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    hideBigPicture();
+    closeModal();
   }
 }
 
 const onCancelButtonClick = () => {
-  hideBigPicture();
+  closeModal();
 };
 
 const renderPictureDetails = ({ url, likes, description }) => {
@@ -67,4 +67,4 @@ const showBigPicture = (data) => {
 
 cancelButton.addEventListener('click', onCancelButtonClick);
 
-export { showBigPicture };
+export { showBigPicture, onEscKeyDown };
