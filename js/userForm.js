@@ -22,33 +22,39 @@ const pristine = new Pristine(imgUploadForm, {
 
 const startsWithHash = (string) => string[0] === '#';
 
-const hasValidCount = (string) => string.length <= MAX_HASHTAG_COUNT;
+const hasValidLength = (string) =>
+  string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
 
-const hasValidSymbols = (string) => INVALID_HASHTAG_SYMBOLS.test(string.slice(1, string.length));
+const hasValidSymbols = (string) => !INVALID_HASHTAG_SYMBOLS.test(string.slice(1));
 
-const hasValidLength = (string) => string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
+const isValidTag = (tag) =>
+  startsWithHash(tag) && hasValidLength(tag) && hasValidSymbols(tag);
 
-const isHashtagUnique = (string) => {
-  const lowerCaseTags = string.map((tag) => tag.toLowerCase());
+const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
+
+const hasUniqueTags = (tags) => {
+  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
-const isValid = (string) => startsWithHash(string) && hasValidLength(string) && hasValidSymbols(string);
-
-const validateHashtags = (string) => {
-  const tags = string
+const validateTags = (value) => {
+  const tags = value
     .trim()
     .split(' ')
     .filter((tag) => tag.trim().length);
-
-  return hasValidCount(tags) && isHashtagUnique(tags) && tags.every(isValid);
+  return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
 };
 
 pristine.addValidator(
   hashtagInput,
-  validateHashtags,
-  'Неверно заполенено поле хэштегов!'
+  validateTags,
+  'Неправильно заполнены хэштеги'
 );
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  pristine.validate();
+};
 
 const onScaleControlSmaller = () => {
   scaleControlValue.value--;
@@ -69,14 +75,17 @@ const onEscKeyDown = () => {
   document.body.classList.remove('modal-open');
 };
 
-uploadFileInput.addEventListener('change', () => {
+uploadFileInput.addEventListener('change', (evt) => {
   console.log(uploadFileInput.value);
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   scaleControlSmaller.addEventListener('click', onScaleControlSmaller);
   scaleControlBigger.addEventListener('click', onScaleControlBigger);
-  document.addEventListener('keydown', onEscKeyDown);
+
+  if (evt.key === 'Escape') {
+    document.addEventListener('keydown', onEscKeyDown);
+  }
 });
 
 uploadCancel.addEventListener('click', () => {
@@ -88,3 +97,5 @@ uploadCancel.addEventListener('click', () => {
   document.removeEventListener('click', onScaleControlSmaller);
   document.removeEventListener('click', onScaleControlBigger);
 });
+
+imgUploadForm.addEventListener('submit', onFormSubmit);

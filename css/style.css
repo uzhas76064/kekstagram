@@ -516,6 +516,10 @@ main {
   background-color: #ffffff;
 }
 
+img-upload__error {
+  background-color: red;
+}
+
 .img-upload__preview img {
   display: block;
   max-width: 600px;
