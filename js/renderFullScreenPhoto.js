@@ -19,15 +19,31 @@ const createComment = ({ avatar, name, message }) => {
 };
 
 const renderComments = (comments) => {
+  const MAX_RENDERED_COMMENTS = 5;
+  const firstComments = comments.slice(0, MAX_RENDERED_COMMENTS);
   commentList.innerHTML = '';
 
   const fragment = document.createDocumentFragment();
-  comments.forEach((comment) => {
+  firstComments.forEach((comment) => {
     const commentElement = createComment(comment);
     fragment.append(commentElement);
   });
 
   commentList.append(fragment);
+
+  if (comments.length >= MAX_RENDERED_COMMENTS) {
+    commentCount.innerHTML = `${firstComments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
+
+    if (commentsLoader) {
+      commentsLoader.style.display = 'block';
+    }
+  }
+  else if (comments.length < MAX_RENDERED_COMMENTS) {
+    commentCount.innerHTML = `${firstComments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
+    if(commentsLoader) {
+      commentsLoader.style.display = 'none'
+    }
+  }
 };
 
 const closeModal = () => {
@@ -57,8 +73,6 @@ const renderPictureDetails = ({ url, likes, description }) => {
 const showBigPicture = (data) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
-  commentsLoader.classList.add('hidden');
-  commentCount.classList.add('hidden');
   document.addEventListener('keydown', onEscKeyDown);
 
   renderPictureDetails(data);
