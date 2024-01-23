@@ -1,13 +1,77 @@
 const smallerButton = document.querySelector('.scale__control--smaller');
 const biggerButton = document.querySelector('.scale__control--bigger');
 const scaleField = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
+const effectRadio = document.querySelector('.effects__radio');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevelValue = document.querySelector('.effect-level__value');
+const imgUploadForm = document.querySelector('.img-upload__form');
+const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 
 const MAX_SCALE = 100;
 const MIN_SCALE = 25;
 
 // Установка значения по умолчанию
 scaleField.value = MAX_SCALE;
+
+noUiSlider.create(effectLevelSlider, {
+  range: {
+    min: 10,
+    max: 100
+  },
+  connect: 'lower',
+  start: 50,
+  step: 1
+});
+
+effectLevelSlider.noUiSlider.on('update', () => {
+  effectLevelValue.value = effectLevelSlider.noUiSlider.get();
+});
+
+imgUploadForm.addEventListener('change', (evt) => {
+  const target = evt.target;
+  imgUploadEffectLevel.style.display = 'none';
+
+
+  if (evt.target.matches('input[name=effect]')) {
+    const selectedTarget =  target.id;
+
+    // Удаление всех классов эффектов
+    imgUploadPreview.classList.remove(
+      'effects__preview--chrome',
+      'effects__preview--sepia',
+      'effects__preview--marvin',
+      'effects__preview--phobos',
+      'effects__preview--heat'
+    );
+
+
+    switch (selectedTarget) {
+      case 'effect-none':
+        break;
+      case 'effect-chrome':
+        imgUploadPreview.classList.add('effects__preview--chrome');
+        imgUploadEffectLevel.style.display = 'block';
+        break;
+      case 'effect-sepia':
+        imgUploadPreview.classList.add('effects__preview--sepia');
+        imgUploadEffectLevel.style.display = 'block';
+        break;
+      case 'effect-marvin':
+        imgUploadPreview.classList.add('effects__preview--marvin');
+        imgUploadEffectLevel.style.display = 'block';
+        break;
+      case 'effect-phobos':
+        imgUploadPreview.classList.add('effects__preview--phobos');
+        imgUploadEffectLevel.style.display = 'block';
+        break;
+      case 'effect-heat':
+        imgUploadPreview.classList.add('effects__preview--heat');
+        imgUploadEffectLevel.style.display = 'block';
+        break;
+    }
+  }
+});
 
 const scaleUploadingImg = (img, scaleValue) => {
   if (scaleValue === MAX_SCALE) {
