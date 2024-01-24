@@ -24,11 +24,17 @@ noUiSlider.create(effectLevelSlider, {
   step: 1
 });
 
+const showSlider = (effectName) => {
+  imgUploadPreview.classList.add(`effects__preview--${effectName}`);
+  imgUploadEffectLevel.style.display = 'block';
+};
+
+
 effectLevelSlider.noUiSlider.on('update', () => {
   effectLevelValue.value = effectLevelSlider.noUiSlider.get();
 });
 
-imgUploadForm.addEventListener('change', (evt) => {
+const chooseFilter = (evt) => {
   const target = evt.target;
   imgUploadEffectLevel.style.display = 'none';
 
@@ -50,28 +56,25 @@ imgUploadForm.addEventListener('change', (evt) => {
       case 'effect-none':
         break;
       case 'effect-chrome':
-        imgUploadPreview.classList.add('effects__preview--chrome');
-        imgUploadEffectLevel.style.display = 'block';
+        showSlider('chrome');
         break;
       case 'effect-sepia':
-        imgUploadPreview.classList.add('effects__preview--sepia');
-        imgUploadEffectLevel.style.display = 'block';
+        showSlider('sepia');
         break;
       case 'effect-marvin':
-        imgUploadPreview.classList.add('effects__preview--marvin');
-        imgUploadEffectLevel.style.display = 'block';
+        showSlider('marvin');
         break;
       case 'effect-phobos':
-        imgUploadPreview.classList.add('effects__preview--phobos');
-        imgUploadEffectLevel.style.display = 'block';
+        showSlider('phobos');
         break;
       case 'effect-heat':
-        imgUploadPreview.classList.add('effects__preview--heat');
-        imgUploadEffectLevel.style.display = 'block';
+        showSlider('heat');
         break;
     }
   }
-});
+};
+
+imgUploadForm.addEventListener('change', chooseFilter);
 
 const scaleUploadingImg = (img, scaleValue) => {
   if (scaleValue === MAX_SCALE) {
