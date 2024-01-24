@@ -54,9 +54,42 @@ effectLevelSlider.noUiSlider.on('update', () => {
   effectLevelValue.value = effectLevelSlider.noUiSlider.get();
 });
 
+effectLevelSlider.noUiSlider.on('update', (values, handle) => {
+  /**
+   * values представляет собой массив значений положения ползунка (handles). В случае слайдера с одним ползунком (как в вашем случае)
+   * этот массив будет содержать одно значение.
+   * Например, если пользователь двигает ползунок и устанавливает его в позицию 30, массив values будет содержать [30].
+   *
+   * handle указывает на индекс ползунка (handle), для которого произошло событие обновления.
+   * В случае слайдера с одним ползунком (как в вашем случае) значение handle всегда будет 0.**/
+  effectLevelValue.value = values[handle];
+
+  const selectedEffect = document.querySelector('input[name="effect"]:checked').id;
+
+  switch (selectedEffect) {
+    case 'effect-chrome':
+      imgUploadPreview.style.filter = `grayscale(${effectLevelValue.value})`;
+      break;
+    case 'effect-sepia':
+      imgUploadPreview.style.filter = `sepia(${effectLevelValue.value})`;
+      break;
+    case 'effect-marvin':
+      imgUploadPreview.style.filter = `invert(${effectLevelValue.value}%)`;
+      break;
+    case 'effect-phobos':
+      imgUploadPreview.style.filter = `blur(${effectLevelValue.value}px)`;
+      break;
+    case 'effect-heat':
+      imgUploadPreview.style.filter = `brightness(${effectLevelValue.value})`;
+      break;
+  }
+});
+
 const chooseFilter = (evt) => {
   const target = evt.target;
   imgUploadEffectLevel.style.display = 'none';
+
+  imgUploadPreview.style.filter = ''; // Сбросить фильтр перед применением нового эффекта
 
 
   if (evt.target.matches('input[name=effect]')) {
@@ -74,6 +107,7 @@ const chooseFilter = (evt) => {
 
     switch (selectedTarget) {
       case 'effect-none':
+        imgUploadPreview.style.filter = '';
         break;
       case 'effect-chrome':
         showSlider('chrome');
@@ -86,7 +120,6 @@ const chooseFilter = (evt) => {
       case 'effect-marvin':
         showSlider('marvin');
         changeEffectLevel(0, 100, 1, 100);
-
         break;
       case 'effect-phobos':
         showSlider('phobos');
