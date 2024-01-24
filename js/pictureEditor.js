@@ -2,7 +2,6 @@ const smallerButton = document.querySelector('.scale__control--smaller');
 const biggerButton = document.querySelector('.scale__control--bigger');
 const scaleField = document.querySelector('.scale__control--value');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
-const effectRadio = document.querySelector('.effects__radio');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -19,6 +18,16 @@ noUiSlider.create(effectLevelSlider, {
     min: 10,
     max: 100
   },
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+
+      return value.toFixed(1);
+    },
+    from: (value) => parseFloat(value),
+  },
   connect: 'lower',
   start: 50,
   step: 1
@@ -27,6 +36,17 @@ noUiSlider.create(effectLevelSlider, {
 const showSlider = (effectName) => {
   imgUploadPreview.classList.add(`effects__preview--${effectName}`);
   imgUploadEffectLevel.style.display = 'block';
+};
+
+const changeEffectLevel = (min, max, step, start) => {
+  effectLevelSlider.noUiSlider.updateOptions({
+    range: {
+      min: min,
+      max: max
+    },
+    step: step,
+    start: start
+  });
 };
 
 
@@ -57,15 +77,20 @@ const chooseFilter = (evt) => {
         break;
       case 'effect-chrome':
         showSlider('chrome');
+        changeEffectLevel(0, 1, 0.1, 1);
         break;
       case 'effect-sepia':
         showSlider('sepia');
+        changeEffectLevel(0, 1, 0.1, 1);
         break;
       case 'effect-marvin':
         showSlider('marvin');
+        changeEffectLevel(0, 100, 1, 100);
+
         break;
       case 'effect-phobos':
         showSlider('phobos');
+        changeEffectLevel(0, 3, 0.1, 1);
         break;
       case 'effect-heat':
         showSlider('heat');
