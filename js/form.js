@@ -1,3 +1,5 @@
+import {resetFilter, resetScale} from './pictureEditor.js';
+
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -10,6 +12,7 @@ const MAX_HASHTAG_COUNT = 5;
 const MIN_HASHTAG_LENGTH = 2;
 const MAX_HASHTAG_LENGTH = 20;
 const UNVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g;
+const POST_PICTURES_URL = 'https://25.javascript.htmlacademy.pro/kekstagram';
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__element',
@@ -21,6 +24,13 @@ const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyDown);
+};
+
+const resetFormParams = () => {
+  form.reset();
+  pristine.reset();
+  resetScale(document.querySelector('.img-upload__preview img'));
+  resetFilter(document.querySelector('.img-upload__preview img'));
 };
 
 const hideModal = () => {
@@ -82,10 +92,33 @@ pristine.addValidator(
 );
 
 const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+
 };
 
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
+// form.addEventListener('submit', onFormSubmit);
+
+const setUserFormSubmit = (onsuccess) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if(isValid) {
+      const formData = new FormData(evt.target);
+      fetch(POST_PICTURES_URL,
+        {
+          method: 'POST',
+          credentials:'same-origin',
+          body: formData
+        })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+        })
+        .then(() => onsuccess());
+    }
+  });
+};
+
+export {setUserFormSubmit, resetFormParams};
