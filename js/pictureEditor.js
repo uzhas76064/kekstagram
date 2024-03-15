@@ -164,3 +164,13 @@ biggerButton.addEventListener('click', () => {
 
   scaleUploadingImg(imgUploadPreview, currentValue);
 });
+
+const resetScale = (img) => {
+  img.style.transform = 'scale(1)';
+};
+
+const resetFilter = (img, removingFilter) => {
+  img.removeAttribute('class');
+};
+
+export {resetScale, resetFilter};
