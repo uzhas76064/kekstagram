@@ -31,6 +31,7 @@ const resetFormParams = () => {
   pristine.reset();
   resetScale(document.querySelector('.img-upload__preview img'));
   resetFilter(document.querySelector('.img-upload__preview img'));
+  overlay.classList.add('hidden');
 };
 
 const hideModal = () => {
