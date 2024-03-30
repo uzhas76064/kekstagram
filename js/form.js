@@ -1,31 +1,34 @@
 import {resetFilter, resetScale} from './pictureEditor.js';
 
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
-const body = document.querySelector('body');
-const cancelButton = document.querySelector('#upload-cancel');
-const fileField = document.querySelector('#upload-file');
-const hashtagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
+const form = document.querySelector('.img-upload__form'); // Получаем форму для загрузки изображения
+const overlay = document.querySelector('.img-upload__overlay'); // Получаем оверлей для модального окна
+const body = document.querySelector('body'); // Получаем тело документа
+const cancelButton = document.querySelector('#upload-cancel'); // Получаем кнопку отмены
+const fileField = document.querySelector('#upload-file'); // Получаем поле для выбора файла
+const hashtagField = document.querySelector('.text__hashtags'); // Получаем поле для хэштегов
+const commentField = document.querySelector('.text__description'); // Получаем поле для комментариев
 
-const MAX_HASHTAG_COUNT = 5;
-const MIN_HASHTAG_LENGTH = 2;
-const MAX_HASHTAG_LENGTH = 20;
-const UNVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g;
-const POST_PICTURES_URL = 'https://25.javascript.htmlacademy.pro/kekstagram';
+const MAX_HASHTAG_COUNT = 5; // Максимальное количество хэштегов
+const MIN_HASHTAG_LENGTH = 2; // Минимальная длина хэштега
+const MAX_HASHTAG_LENGTH = 20; // Максимальная длина хэштега
+const UNVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g; // Регулярное выражение для поиска недопустимых символов в хэштегах
+const POST_PICTURES_URL = 'https://25.javascript.htmlacademy.pro/kekstagram'; // URL для отправки изображений
 
+// Создание экземпляра Pristine для валидации формы
 const pristine = new Pristine(form, {
   classTo: 'img-upload__element',
   errorTextParent: 'img-upload__element',
   errorTextClass: 'img-upload__error',
 });
 
+// Функция для отображения модального окна
 const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyDown);
 };
 
+// Функция для сброса параметров формы
 const resetFormParams = () => {
   form.reset();
   pristine.reset();
@@ -34,6 +37,7 @@ const resetFormParams = () => {
   overlay.classList.add('hidden');
 };
 
+// Функция для скрытия модального окна
 const hideModal = () => {
   form.reset();
   pristine.reset();
@@ -42,10 +46,12 @@ const hideModal = () => {
   document.removeEventListener('keydown', onEscKeyDown);
 };
 
+// Функция для проверки, находится ли фокус в текстовом поле
 const isTextFieldFocused = () =>
   document.activeElement === hashtagField ||
   document.activeElement === commentField;
 
+// Обработчик нажатия клавиши Esc
 function onEscKeyDown(evt) {
   if (evt.key === 'Escape' && !isTextFieldFocused()) {
     evt.preventDefault();
@@ -53,31 +59,40 @@ function onEscKeyDown(evt) {
   }
 }
 
+// Обработчик нажатия кнопки отмены
 const onCancelButtonClick = () => {
   hideModal();
 };
 
+// Обработчик изменения выбранного файла
 const onFileInputChange = () => {
   showModal();
 };
 
+// Функция для проверки, начинается ли строка с символа #
 const startsWithHash = (string) => string[0] === '#';
 
+// Функция для проверки длины хэштега
 const hasValidLength = (string) =>
   string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
 
+// Функция для проверки допустимых символов в хэштеге
 const hasValidSymbols = (string) => !UNVALID_SYMBOLS.test(string.slice(1));
 
+// Функция для проверки валидности хэштега
 const isValidTag = (tag) =>
   startsWithHash(tag) && hasValidLength(tag) && hasValidSymbols(tag);
 
+// Функция для проверки количества хэштегов
 const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
 
+// Функция для проверки уникальности хэштегов
 const hasUniqueTags = (tags) => {
   const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
+// Функция для валидации хэштегов
 const validateTags = (value) => {
   const tags = value
     .trim()
@@ -86,20 +101,24 @@ const validateTags = (value) => {
   return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
 };
 
+// Добавление валидатора для поля ввода хэштегов
 pristine.addValidator(
   hashtagField,
   validateTags,
   'Неправильно заполнены хэштеги'
 );
 
+// Обработчик отправки формы
 const onFormSubmit = (evt) => {
-
+  // Добавьте обработку отправки формы
 };
 
+// Добавление слушателей событий
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 // form.addEventListener('submit', onFormSubmit);
 
+// Функция для установки обработчика отправки формы пользователя
 const setUserFormSubmit = (onsuccess) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -122,4 +141,5 @@ const setUserFormSubmit = (onsuccess) => {
   });
 };
 
+// Экспорт функций
 export {setUserFormSubmit, resetFormParams};
