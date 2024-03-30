@@ -1,18 +1,22 @@
-const smallerButton = document.querySelector('.scale__control--smaller');
-const biggerButton = document.querySelector('.scale__control--bigger');
-const scaleField = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview img');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const imgUploadForm = document.querySelector('.img-upload__form');
-const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+// Получаем кнопки уменьшения и увеличения масштаба, поле для отображения масштаба,
+// превью изображения, слайдер уровня эффекта, поле для отображения значения уровня эффекта,
+// форму загрузки изображения и контейнер уровня эффекта
+const smallerButton = document.querySelector('.scale__control--smaller'); // Получаем кнопку уменьшения масштаба
+const biggerButton = document.querySelector('.scale__control--bigger'); // Получаем кнопку увеличения масштаба
+const scaleField = document.querySelector('.scale__control--value'); // Получаем поле для отображения масштаба
+const imgUploadPreview = document.querySelector('.img-upload__preview img'); // Получаем превью изображения
+const effectLevelSlider = document.querySelector('.effect-level__slider'); // Получаем слайдер уровня эффекта
+const effectLevelValue = document.querySelector('.effect-level__value'); // Получаем поле для отображения значения уровня эффекта
+const imgUploadForm = document.querySelector('.img-upload__form'); // Получаем форму загрузки изображения
+const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level'); // Получаем контейнер уровня эффекта
 
-const MAX_SCALE = 100;
-const MIN_SCALE = 25;
+const MAX_SCALE = 100; // Максимальное значение масштаба
+const MIN_SCALE = 25; // Минимальное значение масштаба
 
-// Установка значения по умолчанию
+// Устанавливаем значение масштаба по умолчанию
 scaleField.value = MAX_SCALE;
 
+// Инициализация слайдера уровня эффекта
 noUiSlider.create(effectLevelSlider, {
   range: {
     min: 10,
@@ -23,7 +27,6 @@ noUiSlider.create(effectLevelSlider, {
       if (Number.isInteger(value)) {
         return value.toFixed(0);
       }
-
       return value.toFixed(1);
     },
     from: (value) => parseFloat(value),
@@ -33,11 +36,13 @@ noUiSlider.create(effectLevelSlider, {
   step: 1
 });
 
+// Функция для отображения слайдера уровня эффекта
 const showSlider = (effectName) => {
   imgUploadPreview.classList.add(`effects__preview--${effectName}`);
   imgUploadEffectLevel.style.display = 'block';
 };
 
+// Функция для изменения уровня эффекта
 const changeEffectLevel = (min, max, step, start) => {
   effectLevelSlider.noUiSlider.updateOptions({
     range: {
@@ -49,19 +54,13 @@ const changeEffectLevel = (min, max, step, start) => {
   });
 };
 
-
+// Обновление значения уровня эффекта при изменении ползунка
 effectLevelSlider.noUiSlider.on('update', () => {
   effectLevelValue.value = effectLevelSlider.noUiSlider.get();
 });
 
+// Обновление значения уровня эффекта и применение выбранного эффекта к превью изображения
 effectLevelSlider.noUiSlider.on('update', (values, handle) => {
-  /**
-   * values представляет собой массив значений положения ползунка (handles). В случае слайдера с одним ползунком (как в вашем случае)
-   * этот массив будет содержать одно значение.
-   * Например, если пользователь двигает ползунок и устанавливает его в позицию 30, массив values будет содержать [30].
-   *
-   * handle указывает на индекс ползунка (handle), для которого произошло событие обновления.
-   * В случае слайдера с одним ползунком (как в вашем случае) значение handle всегда будет 0.**/
   effectLevelValue.value = values[handle];
 
   const selectedEffect = document.querySelector('input[name="effect"]:checked').id;
@@ -85,15 +84,15 @@ effectLevelSlider.noUiSlider.on('update', (values, handle) => {
   }
 });
 
+// Функция выбора эффекта
 const chooseFilter = (evt) => {
   const target = evt.target;
   imgUploadEffectLevel.style.display = 'none';
 
-  imgUploadPreview.style.filter = ''; // Сбросить фильтр перед применением нового эффекта
-
+  imgUploadPreview.style.filter = ''; // Сброс фильтра перед применением нового эффекта
 
   if (evt.target.matches('input[name=effect]')) {
-    const selectedTarget =  target.id;
+    const selectedTarget = target.id;
 
     // Удаление всех классов эффектов
     imgUploadPreview.classList.remove(
@@ -104,10 +103,9 @@ const chooseFilter = (evt) => {
       'effects__preview--heat'
     );
 
-
     switch (selectedTarget) {
       case 'effect-none':
-        imgUploadPreview.style.filter = '';
+        imgUploadPreview.style.filter = ''; // Сброс фильтра
         break;
       case 'effect-chrome':
         showSlider('chrome');
@@ -132,17 +130,19 @@ const chooseFilter = (evt) => {
   }
 };
 
+// Слушатель изменения выбранного эффекта
 imgUploadForm.addEventListener('change', chooseFilter);
 
+// Функция для изменения масштаба загружаемого изображения
 const scaleUploadingImg = (img, scaleValue) => {
   if (scaleValue === MAX_SCALE) {
     img.style.transform = 'scale(1)';
   } else {
     img.style.transform = `scale(0.${scaleValue})`;
   }
-
 };
 
+// Слушатель для кнопки уменьшения масштаба
 smallerButton.addEventListener('click', () => {
   let currentValue = parseInt(scaleField.value, 10);
 
@@ -154,6 +154,7 @@ smallerButton.addEventListener('click', () => {
   scaleUploadingImg(imgUploadPreview, currentValue);
 });
 
+// Слушатель для кнопки увеличения масштаба
 biggerButton.addEventListener('click', () => {
   let currentValue = parseInt(scaleField.value, 10);
 
@@ -165,12 +166,15 @@ biggerButton.addEventListener('click', () => {
   scaleUploadingImg(imgUploadPreview, currentValue);
 });
 
+// Функция для сброса масштаба изображения
 const resetScale = (img) => {
   img.style.transform = 'scale(1)';
 };
 
+// Функция для сброса фильтра изображения
 const resetFilter = (img, removingFilter) => {
   img.removeAttribute('class');
 };
 
+// Экспорт функций
 export {resetScale, resetFilter};

@@ -1,5 +1,5 @@
-import { getPictures } from './data.js';
-import { renderPictures } from './picture.js';
+//import { getPictures } from './data.js';
+//import { renderPictures } from './picture.js';
 import './form.js';
 import './pictureEditor.js';
 import {fetchPictures} from './server.js';
