@@ -7,12 +7,45 @@ const cancelButton = document.querySelector('#upload-cancel'); // Получае
 const fileField = document.querySelector('#upload-file'); // Получаем поле для выбора файла
 const hashtagField = document.querySelector('.text__hashtags'); // Получаем поле для хэштегов
 const commentField = document.querySelector('.text__description'); // Получаем поле для комментариев
+const successMessage = document.getElementById('success');
+const successSection = successMessage.content.firstElementChild.cloneNode(true);
+const successButton = successSection.querySelector('.success__button');
+const errorMessage = document.getElementById('error');
+const errorSection = errorMessage.content.firstElementChild.cloneNode(true);
+const errorButton = errorSection.querySelector('.error__button');
+
 
 const MAX_HASHTAG_COUNT = 5; // Максимальное количество хэштегов
 const MIN_HASHTAG_LENGTH = 2; // Минимальная длина хэштега
 const MAX_HASHTAG_LENGTH = 20; // Максимальная длина хэштега
-const UNVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g; // Регулярное выражение для поиска недопустимых символов в хэштегах
+const INVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g; // Регулярное выражение для поиска недопустимых символов в хэштегах
 const POST_PICTURES_URL = 'https://25.javascript.htmlacademy.pro/kekstagram'; // URL для отправки изображений
+
+successButton.addEventListener('click', () =>{
+  successSection.classList.add('hidden');
+});
+
+errorSection.addEventListener('click', (evt) => {
+  if (evt.target.className !== 'error__inner') {
+    errorSection.classList.add('hidden');
+  }
+});
+
+successSection.addEventListener('click', (evt) => {
+  if (evt.target.className !== 'success__inner') {
+    successSection.classList.add('hidden');
+  }
+});
+
+// Функция вывода сообщения об успешной отправки
+const showSuccessMessage = () => {
+  successSection.classList.remove('hidden');
+  body.appendChild(successSection);
+};
+
+const showErrorMessage = () => {
+  body.appendChild(errorSection);
+};
 
 // Создание экземпляра Pristine для валидации формы
 const pristine = new Pristine(form, {
@@ -35,6 +68,7 @@ const resetFormParams = () => {
   resetScale(document.querySelector('.img-upload__preview img'));
   resetFilter(document.querySelector('.img-upload__preview img'));
   overlay.classList.add('hidden');
+  showSuccessMessage();
 };
 
 // Функция для скрытия модального окна
@@ -77,7 +111,7 @@ const hasValidLength = (string) =>
   string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
 
 // Функция для проверки допустимых символов в хэштеге
-const hasValidSymbols = (string) => !UNVALID_SYMBOLS.test(string.slice(1));
+const hasValidSymbols = (string) => !INVALID_SYMBOLS.test(string.slice(1));
 
 // Функция для проверки валидности хэштега
 const isValidTag = (tag) =>
@@ -108,18 +142,13 @@ pristine.addValidator(
   'Неправильно заполнены хэштеги'
 );
 
-// Обработчик отправки формы
-const onFormSubmit = (evt) => {
-  // Добавьте обработку отправки формы
-};
-
 // Добавление слушателей событий
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 // form.addEventListener('submit', onFormSubmit);
 
 // Функция для установки обработчика отправки формы пользователя
-const setUserFormSubmit = (onsuccess) => {
+const setUserFormSubmit = (onsuccess, onerror) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -136,10 +165,13 @@ const setUserFormSubmit = (onsuccess) => {
             return response.json();
           }
         })
-        .then(() => onsuccess());
+        .then(() => onsuccess())
+        .catch(() => {
+          showErrorMessage();
+        });
     }
   });
 };
 
 // Экспорт функций
-export {setUserFormSubmit, resetFormParams};
+export {setUserFormSubmit, resetFormParams, showErrorMessage};
