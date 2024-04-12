@@ -11,8 +11,10 @@ const fetchPictures = () => {
       throw new Error(`${response.status} ${response.statusText}`);
     })
     .then((data) => {
-      console.log(data);
       renderPictures(data);
+    })
+    .then(() => {
+      document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     })
     .catch((err) => {
       throw new Error(err);
