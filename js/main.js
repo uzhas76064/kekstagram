@@ -4,7 +4,10 @@ import './form.js';
 import './pictureEditor.js';
 import {fetchPictures} from './server.js';
 import {resetFormParams, setUserFormSubmit} from './form.js';
+import {renderPictures} from './picture.js';
+import './preview.js';
 
 // renderPictures(getPictures());
-fetchPictures();
+fetchPictures(renderPictures);
+document.querySelector('.img-filters').classList.remove('img-filters--inactive');
 setUserFormSubmit(resetFormParams);
