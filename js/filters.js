@@ -28,7 +28,7 @@ const showDiscussedPictures = (pictures) => {
 
 const showRandomPictures = (pictures) => {
   // Перемешиваем массив изображений
-  const shuffledPictures = pictures.slice().sort(() => Math.random() - 0.5);
+  const shuffledPictures = pictures.slice(0, 10).sort(() => Math.random() - 0.5);
 
   const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
   shuffledPictures.forEach((picture) => {
