@@ -23,8 +23,10 @@ const createPicture = (data) => {
   return picture; // Возвращаем созданный элемент изображения
 };
 
+
 // Функция для отрисовки списка изображений на странице
 const renderPictures = (pictures) => {
+  console.log(pictures);
   const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
   pictures.forEach((picture) => {
     const pictureElement = createPicture(picture); // Создаем DOM-элемент изображения на основе данных
@@ -34,4 +36,4 @@ const renderPictures = (pictures) => {
   container.append(fragment); // Добавляем фрагмент с элементами изображений в контейнер на странице
 };
 
-export { renderPictures }; // Экспорт функции для отрисовки списка изображений
+export { renderPictures, createPicture }; // Экспорт функции для отрисовки списка изображений

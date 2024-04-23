@@ -1,8 +1,6 @@
-import {renderPictures} from './picture.js';
-
 const PICTURES_URL = 'https://25.javascript.htmlacademy.pro/kekstagram/data';
 
-const fetchPictures = () => {
+const fetchPictures = (onSuccess) => {
   fetch(PICTURES_URL)
     .then((response) => {
       if (response.ok) {
@@ -11,10 +9,7 @@ const fetchPictures = () => {
       throw new Error(`${response.status} ${response.statusText}`);
     })
     .then((data) => {
-      renderPictures(data);
-    })
-    .then(() => {
-      document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+      onSuccess(data);
     })
     .catch((err) => {
       throw new Error(err);

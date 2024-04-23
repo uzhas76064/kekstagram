@@ -1,3 +1,5 @@
+const sortPicturesByComments = (pic1, pic2)  => pic1.comments.length < pic2.comments.length ? 1 : -1;
+
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -56,4 +58,4 @@ const throttle = (callback, delayBetweenFrames) => {
 };
 
 
-export { getRandomPositiveInteger, checkStringLength, getRandomArrayElement, debounce, throttle };
+export { getRandomPositiveInteger, checkStringLength, getRandomArrayElement, debounce, throttle, sortPicturesByComments };
