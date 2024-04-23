@@ -1,11 +1,14 @@
 import {createPicture} from './picture.js';
 import {fetchPictures} from './server.js';
 import {sortPicturesByComments} from './util.js';
+import {debounce} from './util.js';
 
 const filterRandom = document.getElementById('filter-random');
 const filterDefault = document.getElementById('filter-default');
 const filterDiscussed = document.getElementById('filter-discussed');
 const container = document.querySelector('.pictures');
+
+const RENDER_DELAY= 500;
 
 const removePictures = () => {
   Array.from(container.children).forEach((child) => {
