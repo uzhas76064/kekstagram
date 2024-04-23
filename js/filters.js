@@ -10,6 +10,8 @@ const container = document.querySelector('.pictures');
 
 const RENDER_DELAY= 500;
 
+const debouncedFetchPictures = debounce(fetchPictures, RENDER_DELAY);
+
 const removePictures = () => {
   Array.from(container.children).forEach((child) => {
     if (child.classList.contains('picture')) {
@@ -55,23 +57,23 @@ const showDefaultPictures = (pictures) => {
   container.append(fragment); // Добавляем фрагмент с элементами изображений в контейнер на странице
 };
 
-filterDiscussed.addEventListener('click', debounce(() => {
+filterDiscussed.addEventListener('click',() => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.add('img-filters__button--active');
-  fetchPictures(showDiscussedPictures);
-}, RENDER_DELAY));
+  debouncedFetchPictures(showDiscussedPictures);
+});
 
-filterRandom.addEventListener('click', debounce(() => {
+filterRandom.addEventListener('click',() => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.add('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  fetchPictures(showRandomPictures);
-}, RENDER_DELAY));
+  debouncedFetchPictures(showRandomPictures);
+});
 
-filterDefault.addEventListener('click', debounce(() => {
+filterDefault.addEventListener('click',() => {
   filterDefault.classList.add('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  fetchPictures(showDefaultPictures);
-}, RENDER_DELAY));
+  debouncedFetchPictures(showDefaultPictures);
+});
