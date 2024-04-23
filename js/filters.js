@@ -59,19 +59,25 @@ filterDiscussed.addEventListener('click', () => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.add('img-filters__button--active');
-  fetchPictures(showDiscussedPictures);
+  debounce(() => {
+    fetchPictures(showDiscussedPictures);
+  }, RENDER_DELAY);
 });
 
 filterRandom.addEventListener('click', () => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.add('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  fetchPictures(showRandomPictures);
+  debounce(() => {
+    fetchPictures(showRandomPictures);
+  }, RENDER_DELAY);
 });
 
 filterDefault.addEventListener('click', () => {
   filterDefault.classList.add('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  fetchPictures(showDefaultPictures);
+  debounce(() => {
+    fetchPictures(showDefaultPictures);
+  }, RENDER_DELAY);
 });
