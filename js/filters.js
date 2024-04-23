@@ -55,23 +55,23 @@ const showDefaultPictures = (pictures) => {
   container.append(fragment); // Добавляем фрагмент с элементами изображений в контейнер на странице
 };
 
-filterDiscussed.addEventListener('click', () => {
+filterDiscussed.addEventListener('click', debounce(() => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.add('img-filters__button--active');
   fetchPictures(showDiscussedPictures);
-});
+}, RENDER_DELAY));
 
-filterRandom.addEventListener('click', () => {
+filterRandom.addEventListener('click', debounce(() => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.add('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
   fetchPictures(showRandomPictures);
-});
+}, RENDER_DELAY));
 
-filterDefault.addEventListener('click', () => {
+filterDefault.addEventListener('click', debounce(() => {
   filterDefault.classList.add('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
   fetchPictures(showDefaultPictures);
-});
+}, RENDER_DELAY));
