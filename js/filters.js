@@ -17,6 +17,8 @@ const removePictures = () => {
     }
   });
 };
+
+const debouncedFetchPictures = debounce(fetchPictures, RENDER_DELAY);
 const showDiscussedPictures = (pictures) => {
   const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
   const sortedPictures = pictures.slice().sort(sortPicturesByComments);
@@ -59,25 +61,19 @@ filterDiscussed.addEventListener('click', () => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.add('img-filters__button--active');
-  debounce(() => {
-    fetchPictures(showDiscussedPictures);
-  }, RENDER_DELAY);
+  debouncedFetchPictures(showDiscussedPictures);
 });
 
 filterRandom.addEventListener('click', () => {
   filterDefault.classList.remove('img-filters__button--active');
   filterRandom.classList.add('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  debounce(() => {
-    fetchPictures(showRandomPictures);
-  }, RENDER_DELAY);
+  debouncedFetchPictures(showRandomPictures);
 });
 
 filterDefault.addEventListener('click', () => {
   filterDefault.classList.add('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  debounce(() => {
-    fetchPictures(showDefaultPictures);
-  }, RENDER_DELAY);
+  debouncedFetchPictures(showDefaultPictures);
 });
