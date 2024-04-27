@@ -26,7 +26,6 @@ const createPicture = (data) => {
 
 // Функция для отрисовки списка изображений на странице
 const renderPictures = (pictures) => {
-  console.log(pictures);
   const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
   pictures.forEach((picture) => {
     const pictureElement = createPicture(picture); // Создаем DOM-элемент изображения на основе данных
