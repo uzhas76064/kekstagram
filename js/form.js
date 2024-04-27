@@ -12,7 +12,6 @@ const successSection = successMessage.content.firstElementChild.cloneNode(true);
 const successButton = successSection.querySelector('.success__button');
 const errorMessage = document.getElementById('error');
 const errorSection = errorMessage.content.firstElementChild.cloneNode(true);
-const errorButton = errorSection.querySelector('.error__button');
 
 
 const MAX_HASHTAG_COUNT = 5; // Максимальное количество хэштегов
@@ -148,7 +147,7 @@ cancelButton.addEventListener('click', onCancelButtonClick);
 // form.addEventListener('submit', onFormSubmit);
 
 // Функция для установки обработчика отправки формы пользователя
-const setUserFormSubmit = (onsuccess, onerror) => {
+const setUserFormSubmit = (onsuccess) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();

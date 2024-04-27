@@ -5,7 +5,6 @@ const FILE_TYPES = ['png','jpg', 'jpeg'];
 
 fileChooser.addEventListener('change', () => {
   const file = fileChooser.files[0];
-  console.log(file);
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((elem) => {
     return fileName.endsWith(elem);

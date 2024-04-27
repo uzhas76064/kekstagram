@@ -1,4 +1,3 @@
-//import { getPictures } from './data.js';
 import './form.js';
 import './pictureEditor.js';
 import {fetchPictures} from './server.js';

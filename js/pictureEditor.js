@@ -172,7 +172,7 @@ const resetScale = (img) => {
 };
 
 // Функция для сброса фильтра изображения
-const resetFilter = (img, removingFilter) => {
+const resetFilter = (img) => {
   img.removeAttribute('class');
 };
 
