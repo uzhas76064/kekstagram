@@ -1,4 +1,4 @@
-import {createPicture, renderPictures} from './picture.js';
+import {renderPictures} from './picture.js';
 import {fetchPictures} from './server.js';
 import {sortPicturesByComments} from './util.js';
 import {debounce} from './util.js';
