@@ -1,4 +1,4 @@
-import {createPicture} from './picture.js';
+import {createPicture, renderPictures} from './picture.js';
 import {fetchPictures} from './server.js';
 import {sortPicturesByComments} from './util.js';
 import {debounce} from './util.js';
@@ -19,42 +19,20 @@ const removePictures = () => {
     }
   });
 };
-const showDiscussedPictures = (pictures) => {
-  const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
-  const sortedPictures = pictures.slice().sort(sortPicturesByComments);
-  sortedPictures.forEach((picture) => {
-    const pictureElement = createPicture(picture); // Создаем DOM-элемент изображения на основе данных
-    fragment.append(pictureElement); // Добавляем элемент изображения во фрагмент
-  });
-  removePictures();
 
-  container.append(fragment); // Добавляем фрагмент с элементами изображений в контейнер на странице
+const showPictures = (pictures) => {
+  removePictures();
+  renderPictures(pictures);
+};
+const showDiscussedPictures = (pictures) => {
+  const sortedPictures = pictures.slice().sort(sortPicturesByComments);
+  showPictures(sortedPictures);
 };
 
 const showRandomPictures = (pictures) => {
   // Перемешиваем массив изображений
   const shuffledPictures = pictures.slice(0, 10).sort(() => Math.random() - 0.5);
-
-  const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
-  shuffledPictures.forEach((picture) => {
-    const pictureElement = createPicture(picture); // Создаем DOM-элемент изображения на основе данных
-    fragment.append(pictureElement); // Добавляем элемент изображения во фрагмент
-  });
-  // Удаляем только дочерние элементы контейнера, которые представляют изображения
-  removePictures();
-
-  container.append(fragment); // Добавляем фрагмент с элементами изображений в контейнер на странице
-};
-
-const showDefaultPictures = (pictures) => {
-  const fragment = document.createDocumentFragment(); // Создаем фрагмент для эффективного добавления элементов в DOM
-  pictures.forEach((picture) => {
-    const pictureElement = createPicture(picture); // Создаем DOM-элемент изображения на основе данных
-    fragment.append(pictureElement); // Добавляем элемент изображения во фрагмент
-  });
-  removePictures();
-
-  container.append(fragment); // Добавляем фрагмент с элементами изображений в контейнер на странице
+  showPictures(shuffledPictures);
 };
 
 filterDiscussed.addEventListener('click',() => {
@@ -75,5 +53,5 @@ filterDefault.addEventListener('click',() => {
   filterDefault.classList.add('img-filters__button--active');
   filterRandom.classList.remove('img-filters__button--active');
   filterDiscussed.classList.remove('img-filters__button--active');
-  debouncedFetchPictures(showDefaultPictures);
+  debouncedFetchPictures(showPictures);
 });
