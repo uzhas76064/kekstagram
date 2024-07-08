@@ -13,7 +13,6 @@ const successButton = successSection.querySelector('.success__button');
 const errorMessage = document.getElementById('error');
 const errorSection = errorMessage.content.firstElementChild.cloneNode(true);
 
-
 const MAX_HASHTAG_COUNT = 5; // Максимальное количество хэштегов
 const MIN_HASHTAG_LENGTH = 2; // Минимальная длина хэштега
 const MAX_HASHTAG_LENGTH = 20; // Максимальная длина хэштега

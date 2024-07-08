@@ -1,9 +1,13 @@
+import {getRandomPositiveInteger} from './util.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const commentCount = document.querySelector('.social__comment-count');
 const commentList = document.querySelector('.social__comments');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 const cancelButton = document.querySelector('.big-picture__cancel');
+const sendCommentButton = document.querySelector('.social__footer-btn');
+const userComment = document.querySelector('.social__footer-text');
 
 const COMMENTS_PER_PORTION = 5;
 let commentsShown = 0;
@@ -37,6 +41,8 @@ const renderComments = () => {
     const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
   }
+
+  console.log(comments);
 
   commentList.innerHTML = '';
   commentList.append(fragment);
@@ -83,7 +89,19 @@ const showBigPicture = (data) => {
   }
 };
 
+const onSendComment = () => {
+  const comment = userComment.value;
+  const commenter = {
+    'id': getRandomPositiveInteger(600, 5000),
+    'avatar': 'img/avatar-6.svg',
+    'message': `${comment}`,
+    'name': ``;
+  };
+  comments.push(commenter);
+};
+
 cancelButton.addEventListener('click', onCancelButtonClick);
 commentsLoader.addEventListener('click', onCommentsLoaderClick);
+sendCommentButton.addEventListener('click', onSendComment);
 
 export { showBigPicture };
