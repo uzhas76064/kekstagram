@@ -6,8 +6,9 @@ const commentList = document.querySelector('.social__comments');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 const cancelButton = document.querySelector('.big-picture__cancel');
-const sendCommentButton = document.querySelector('.social__footer-btn');
-const userComment = document.querySelector('.social__footer-text');
+const socialFooter = document.querySelector('.social__footer');
+const sendCommentButton = socialFooter.querySelector('.social__footer-btn');
+const userComment = socialFooter.querySelector('.social__footer-text');
 
 const COMMENTS_PER_PORTION = 5;
 let commentsShown = 0;
@@ -41,8 +42,6 @@ const renderComments = () => {
     const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
   }
-
-  console.log(comments);
 
   commentList.innerHTML = '';
   commentList.append(fragment);
@@ -91,11 +90,12 @@ const showBigPicture = (data) => {
 
 const onSendComment = () => {
   const comment = userComment.value;
+  const commenterName = bigPicture.querySelector('.big-picture__img').alt;
   const commenter = {
     'id': getRandomPositiveInteger(600, 5000),
     'avatar': 'img/avatar-6.svg',
     'message': `${comment}`,
-    'name': ``;
+    'name': `${commenterName}`
   };
   comments.push(commenter);
 };
