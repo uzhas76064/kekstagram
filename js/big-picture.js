@@ -12,6 +12,7 @@ const sendCommentButton = socialFooter.querySelector('.social__footer-btn');
 const userComment = socialFooter.querySelector('.social__footer-text');
 
 const COMMENTS_PER_PORTION = 5;
+const MAX_COMMENT_LENGTH = 140;
 let commentsShown = 0;
 let comments = [];
 
@@ -90,15 +91,24 @@ const showBigPicture = (data) => {
 };
 
 const onSendComment = () => {
-  const comment = userComment.value;
+  const comment = userComment.value.trim();
+  if (comment.length === 0 || comment.length > MAX_COMMENT_LENGTH) {
+    return; // Проверка на пустой или слишком длинный комментарий
+  }
+
   const commenterName = bigPicture.querySelector('.big-picture__img').alt;
   const commenter = {
     'id': getRandomPositiveInteger(600, 5000),
     'avatar': 'img/avatar-6.svg',
-    'message': `${comment}`,
-    'name': `${commenterName}`
+    'message': comment,
+    'name': commenterName
   };
-  comments.push(commenter);
+
+  comments.unshift(commenter); // Добавление нового комментария в начало списка
+  userComment.value = '';
+
+  commentsShown = Math.min(commentsShown + 1, comments.length); // Обновление количества отображаемых комментариев
+  renderComments();
 };
 
 const onLike = () => {
