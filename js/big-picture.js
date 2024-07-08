@@ -7,6 +7,7 @@ const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 const cancelButton = document.querySelector('.big-picture__cancel');
 const socialFooter = document.querySelector('.social__footer');
+const likesCount = bigPicture.querySelector('.likes-count');
 const sendCommentButton = socialFooter.querySelector('.social__footer-btn');
 const userComment = socialFooter.querySelector('.social__footer-text');
 
@@ -100,8 +101,25 @@ const onSendComment = () => {
   comments.push(commenter);
 };
 
+const onLike = () => {
+  let likes = Number(likesCount.textContent);  // Получаем текущее количество лайков как число
+  likesCount.classList.toggle('likes-count--active');  // Переключаем класс likes-count--active
+
+  if (likesCount.classList.contains('likes-count--active')) {
+    // Если класс likes-count--active присутствует, увеличиваем количество лайков
+    likes++;
+  } else {
+    // Если класс likes-count--active отсутствует, уменьшаем количество лайков
+    likes--;
+  }
+
+  likesCount.textContent = likes;  // Обновляем текстовое содержимое с новым количеством лайков
+};
+
+
 cancelButton.addEventListener('click', onCancelButtonClick);
 commentsLoader.addEventListener('click', onCommentsLoaderClick);
 sendCommentButton.addEventListener('click', onSendComment);
+likesCount.addEventListener('click', onLike);
 
 export { showBigPicture };
